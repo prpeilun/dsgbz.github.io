@@ -1,0 +1,97 @@
+﻿<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta http-equiv="content-language" content="zh-cn">
+<meta content="width=device-width,initial-scale=1,maximum-scale=1" name="viewport">
+<title>缔声广播站 - 音乐播放器</title>
+<meta name="description" content="长春市实验中学的缔声广播站，何其所幸 执此一声">
+<meta name="keywords" content="缔声,广播站,市实验,长春市实验中学">
+<link rel="stylesheet" type="text/css" href="reset.css">
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+<body>
+<div style="display:none" id="bo">
+	<div class="bgimg" style="background-image:url(&quot;http://api.btstu.cn/sjbz/?lx=dongman&amp;k=8197557733577572&quot;)">
+	</div>
+	<div class="navbar">
+		<header>
+		<h1 class="title"><a href="https://mp.weixin.qq.com/s/FIQXB75zQJLThpQM9ZVk8A" class="nuxt-link-exact-active nuxt-link-active title transparent">缔声广播站 - 音乐播放器</a></h1>
+		<a class="subtitle transparent" onclick="location.reload()"><span id="text">&nbsp;何其所幸 执此一声</span></a></header>
+	</div>
+	<div class="con transparent">
+		<div class="title transparent">
+			<span>模式选择</span>
+		</div>
+		<div class="select fullwidth">
+			<div class="select">
+				<select id="selectBack">
+					<option value="升旗">升旗</option><option value="做操">做操</option><option value="远程" selected>远程控制</option>
+				</select>
+				<img src="img/xiala.png" alt="下拉">
+			</div>
+		</div>
+	</div>
+	<div class="con transparent">
+		<label class="input-title">正在播放：</label>
+		<audio controls style="width: 100%;margin-top: 0.2rem" id="audio"></audio>
+	</div>
+	<div class="con transparent" id="list">
+		<script type="text/javascript">
+			var total = new Array(
+				new Array("我相信", "奔跑", "集合整队", "出旗", "感恩的心", "升旗", "密集", "回教室"),
+				new Array("我相信", "奔跑", "集合整队", "时代在召唤", "校操", "密集", "回教室", "感恩的心"),
+				new Array("跑操/0.9", "我相信/0.3", "集合整队/0.8", "出旗/0.3", "升旗/0.8", "校操/1", "密集/0.8", "回教室/0.7"))
+			$("#selectBack").change(function(){
+				var model = 0;
+				if($("#selectBack").val() == "做操")		model = 1;
+				if($("#selectBack").val() == "远程")		model = 2;
+				$("#list").html("")
+				if (model != 2)
+					for (var i = 0; i < total[model].length; i++) {
+						$("#list").html($("#list").html() + "<div class='listbtn' onclick=\"set('" + $("#selectBack").val() +  "\/0" + (i + 1) + total[model][i] + ".mp3')\">" + total[model][i] + "</div>")
+					}
+				else
+					for (var i = 0; i < total[model].length; i++) {
+						$("#list").html($("#list").html() + "<div class='listbtn' onclick=\"alert('请使用键盘控制！')\">" + i + "、" +  total[model][i].split("/")[0] + "</div>")
+					}
+		    });
+
+			function set(name) {
+				var music = document.getElementById("audio");
+				music.src = name
+				music.play()
+				$(".input-title").html("正在播放： " + "<h1  style='display:inline-block;'>" + name + "</h1>")
+			}
+
+			$("#selectBack").change()
+
+			document.onkeydown=function (e) {
+				var music = document.getElementById("audio")
+				console.log(e.keyCode)
+				if(e.keyCode == 32 || e.keyCode == 13){
+					if(audio.paused)
+						audio.play()
+					else audio.pause()
+				}
+
+				if(e.keyCode == 109){
+					audio.volume = audio.volume - 0.1
+				}
+
+				if(e.keyCode == 107){
+					audio.volume = audio.volume + 0.1
+				}
+
+				var num = e.keyCode - 96
+				if(num >= 0 && num < 8)
+				{
+					set("合集\\" + num + total[2][num].split("/")[0] + ".mp3")
+					 audio.volume = total[2][num].split("/")[1]
+				}
+			}
+		</script>
+	</div>
+</div>
+<script type="text/javascript">$(function(){$("#bo").fadeIn(1500)})</script>
+</body>
+</html>
